@@ -17,125 +17,185 @@ from CalculatePSD import calcPSD
 #                   contains "seed_to_compare" in the file name. Make sure
 #                   that a results file is being loaded
 #
-#   usage:          #OFPath2 = path to folder containing second file
-                    #OFPath = path to containing first file
+#   usage:          paths = dictionary with paths to folders
                     #sensor = sensor to plot
                     #sensorlabel = label to display on plot
                     #xrng,yrng = x and y ranges
-                    #seed_to_compare = keyword to select file to compare
-                    #binary = select if data is in binary format (if it is set path to read_FAST_binary correctly)
+                    #seed_to_compare = dictionary with keywords to select files to compare
+                    #colors = dictionary with colors of data in plots
+                    #log = flag for PSD plot with log y-scale
+                    #lines_to_skip = number of lines to skip at beginning of file if data in ASCII format
+                    #labels = dictionary with timeseries labels
+                    #binary = select if data is in binary format 
 #
 #   author:         Francesco Papi
 #
-#   date:           09/2020
+#   date:           10/2022
 #
 #   warnings:       **********************************************************
 #------------------------------------------------------------------------------
 
 #---------- USER PARAMETERS ---------------------------------------------------
 
-binary = True                                                                   #read binary file (requires FAST toolbox by NREL)
-log = False                                                                     #semilog plot
+# %% USER INPUTS
 
-# OFPath2=r'D:\Wind\FLOATING\DLC6.X\IEA15MW_DLC61_idle\Results'
-# OFPath=r'D:\Wind\FLOATING\DLC6.X\IEA15MW_DLC61_idle\Results\onshore'
+binary = False                                                                 #read binary file (requires FAST toolbox by NREL)
+log = False                                                                   #semilog plot
+lines_to_skip=2
+extend = 20
+labels = {
+    '1': 'LC21', 
+    '2': 'LC25',
+    '3': 'LC27'
+    }
 
-# OFPath2=r'D:\Wind\FLOATING\DLC1X\NREL5MW_DLC11\Results'
-# OFPath=r'D:\Wind\FLOATING\DLC1X\NREL5MW_DLC11\Results\onshore'
-OFPath2=r'D:\Wind\FLOATING\DLC1X\IEA15MW_DLC11\Results\onshore'
-OFPath=r'D:\Wind\FLOATING\DLC1X\IEA15MW_DLC11\Results'
+paths = {
+    '1': r'D:\SHARED_ICARO&POLARIS\ALM\FOR_PLOTS\LC21', 
+    '2': r'D:\SHARED_ICARO&POLARIS\ALM\FOR_PLOTS\LC25',
+    '3': r'D:\SHARED_ICARO&POLARIS\ALM\FOR_PLOTS\LC27'
+    }
 
-# OFPath2=r'D:\Wind\FLOATING\DLC1.X\IEA15MW_DLC14\Results'
-# OFPath=r'D:\Wind\FLOATING\DLC1.X\IEA15MW_DLC14\Results\onshore_old'
+seed_to_compare = {
+    '1': 'rotor_aero_forces_0',
+    '2': 'rotor_aero_forces_0',
+    '3': 'rotor_aero_forces_0'
+    }
 
+colors = {
+    '1': 'r',
+    '2': 'b',
+    '3': 'g'
+    }
+
+sensor = 'F_x'
 # sensor = 'GenPwr_[kW]'
-# sensor = 'Wind1VelX_[m/s]'
+# sensor = 'Wind1VelY_[m/s]'
 # sensor = 'BldPitch1_[deg]'
-# sensor = 'RootMxb1_[kN-m]'
+# sensor = 'RootMxb1'
+# sensor = 'YawBrTDxt_[m]'
+# sensor = 'TipDxc2_[m]'
+# sensor = 'TwrBsMxt_[kN-m]'
+# sensor = 'TwrBsFxt_[kN]'
+# sensor = 'RtAeroMyh_[N-m]'
+# sensor = 'PtfmRDyi_[deg]'
 # sensor = 'TipDxc1_[m]'
-# sensor = 'TwrBsMyt_[kN-m]'
-sensor = 'RtAeroMyh_[N-m]'
-# sensor = 'RotSpeed_[rpm]'
+# sensor = 'YawPos_[deg]'
+# sensor = 'HSSBrTqC_[kN-m]'
 # sensor = 'RtAeroFxh_[N]'
 # sensor = 'RotThrust_[kN]'
-
-# sensor = 'YawBrTDxt_[m]'
+# sensor = 'RotPwr_[kW]'
+# sensor = 'Wave1Elev_[m]'
+# sensor = 'RotSpeed_[rpm]'
+# sensor = 'Azimuth_[deg]'
+# sensor = 'B1N3Alpha_[deg]'
+# sensor = 'YawBrTDyt_[m]'
 # sensor = 'TTDspFA_[m]'
 # sensor = 'YawBrFxp_[kN]'
+# sensor = 'RotSpeed_[rpm]'
 # sensor = 'NcIMUTAxs_[m/s^2]'
-
 # sensor = 'GenSpeed_[rpm]'
-# sensor = 'NacYaw_[deg]'
-# sensor = 'PtfmSurge_[m]'
+# sensor = 'YawPos_[deg]'
+# sensor = 'PtfmTDzi_[m]'
+# sensor = 'L3N70T_[N]'
 # sensor = 'PtfmYaw_[deg]'
-# sensor = 'TwrBsFxt_[kN]'
 # sensor = 'PtfmPitch_[deg]'
+# sensor = 'HorSpd'
+# sensor = 'RootMyc1_[kN-m]'
+# sensor = 'TipDxc1_[m]'
+# sensor = 'Wave1Elev_[m]'
 
 sensorlabel = sensor
 #sensorlabel='$ T_X^{BT} $ (m)'  #'wind speed @ hub (m/s)' #'$ T_X^{BT} $ (m)'
-xrng=[0,1]
-yrng=[0,1]
 
+xrng=[0,5]
 
-
-# seed_to_compare = 'OF_ws11_ti0_ECD+r'
-seed_to_compare = 's574'
 #------------------------------------------------------------------------------
 
+sf = {}
+nperseg = {}
+noverlap = {}
+Channels = {}
+f = {}
+PSD = {}
 
-for file in os.listdir(OFPath2):
-    if seed_to_compare in file and '.out' in file:
-        OFfile2='\\'.join([OFPath2, file])
+fig1, ax = plt.subplots(2,1)
+
+for key in paths: 
+    for file in os.listdir(paths[key]):
+        if seed_to_compare[key] in file and '.out' in file:
+            OFfile='\\'.join([paths[key], file])
+            
+    if binary:
         
-for file in os.listdir(OFPath):
-    if seed_to_compare in file and '.out' in file:
-        OFfile='\\'.join([OFPath, file])
+        Channels[key] = FASTOutputFile(OFfile).toDataFrame()
+        
+        sf[key] = 1/(Channels[key].loc[1, 'Time_[s]'] - Channels[key].loc[0, 'Time_[s]'])
+        nperseg[key] = len(Channels[key]['Time_[s]'])
+        noverlap[key] = nperseg[key]/2
 
-if binary:
-    Channels_OF2 = FASTOutputFile(OFfile2).toDataFrame()
-    Channels_OF = FASTOutputFile(OFfile).toDataFrame()
-else:
-    Channels_OF2 = pd.read_table(OFfile2, skiprows=6, skipinitialspace=True)
-    Channels_OF = pd.read_table(OFfile, skiprows=6, skipinitialspace=True)
-    Channels_OF.columns = Channels_OF.columns.str.replace(' ', '')
-    Channels_OF2.columns = Channels_OF2.columns.str.replace(' ', '')
-    Channels_OF=Channels_OF.drop(labels=0)
-    Channels_OF2=Channels_OF2.drop(labels=0)
-    Channels_OF=Channels_OF.astype(float)
-    Channels_OF2=Channels_OF2.astype(float)
+        
+    else: 
+        
+        Channels[key] = pd.read_table(OFfile, skiprows=lines_to_skip, skipinitialspace=True, sep = '\s+')
+        
+        sf[key] = int(1/(Channels[key].loc[1, 'Time'] - Channels[key].loc[0, 'Time']))
+        
+        if extend == 0:
+            ConcatData = Channels[key]
+        else:
+            ConcatData = Channels[key]
+            total_time = Channels[key].loc[:,'Time'].iloc[-1]
+            start_time = Channels[key].loc[:,'Time'].iloc[0]
 
-sf1 = 1/(Channels_OF.loc[1, 'Time_[s]'] - Channels_OF.loc[0, 'Time_[s]'])
-sf2 = 1/(Channels_OF2.loc[1, 'Time_[s]'] - Channels_OF2.loc[0, 'Time_[s]'])
-noverlap = 0.5
-nperseg1 = len(Channels_OF['Time_[s]'])
-nperseg2 = len(Channels_OF2['Time_[s]'])
+            
+            Data_temp = Channels[key].copy()
+            Data_temp = Data_temp.drop(labels = Channels[key].index[0])
+            
+            for kkk in range(extend):
+                
+                Data_temp_II = Data_temp.copy()
+                # try: 
+                #     Data_temp_II.loc[:,'Time'] = Data_temp.loc[:,'Time'] + ConcatData.iloc[-1:0] #total_time*(kkk+1)
+                # except: 
+                Data_temp_II.loc[:,'Time'] = Data_temp.loc[:,'Time'] + (total_time-start_time)*(kkk+1)
+                    
+                ConcatData = pd.concat([ConcatData, Data_temp_II], ignore_index = True)
+                
+        Channels[key] = ConcatData    
+        nperseg[key] = len(Channels[key]['Time'])
+        noverlap[key] = nperseg[key]/2
+        
+    f[key], PSD[key] = calcPSD(Channels[key][sensor], sf[key], nperseg[key], noverlap[key])     
+    
+    if binary: 
+        
+        ax[0].plot(Channels[key]['Time_[s]'], Channels[key][sensor], label = labels[key], linewidth=2, color=colors[key]) 
+        
+    else: 
+        
+        ax[0].plot(Channels[key]['Time'], Channels[key][sensor], label = labels[key], linewidth=2, color=colors[key]) 
+    
 
-f1, PSD1 = calcPSD(Channels_OF[sensor], sf1, nperseg1, noverlap)
-f2, PSD2 = calcPSD(Channels_OF2[sensor], sf2, nperseg2, noverlap)
+    ax[1].plot(f[key], PSD[key], label = labels[key], linewidth=2, color=colors[key])
 
-fig1, ax1 = plt.subplots()
+    
+# set plot labels and stuff like that -----------------------------------------
+ax[1].set_xlabel("Hz [-]")
+ax[1].set_ylabel(sensorlabel.replace(']', '^2/Hz]'))
+ax[1].grid()
+ax[1].set_xlim(xrng)
+ax[1].legend(framealpha=1)
+ax[0].set_ylabel(sensorlabel)
+ax[0].set_xlabel("time [s]")
 
-ax1.set_xlabel("Hz (-)")
-ax1.set_ylabel(sensorlabel)
-
-ax1.grid()
-
-ax1.plot(f2, PSD2, label = "OF2", linewidth=2, color='b')
-ax1.plot(f1, PSD1, label = "OF1", linewidth=2, color='r')
-
-ax1.set_xlim(xrng)
-# ax1.set_ylim(yrng)
-# ax1.set_xticks([500,510,520,530,540,550])
-
-# ax1.fill_between([0.3375, 0.45, 0.45, 0.3375, 0.3375], [10^-16,10^-16, 10, 10, 10^-16], alpha = 0.4)
-# ax1.fill_between([0.23, 0.45, 0.45, 0.23, 0.23], [10^-16,10^-16, 10, 10, 10^-16], alpha=0.4)
-ax1.legend(framealpha=1)
-plt.tight_layout()
-
+# log scale if wanted ---------------------------------------------------------
 if log: 
     
-    ax1.set_yscale('log') 
+    ax[1].set_yscale('log') 
+
+
+fig1.tight_layout()
 
 #uncomment to save figure
-#fig1.savefig('C:\\Users\\Papi\\Desktop\\'+sensor+'.jpg', dpi=300)
+# fig1.savefig('C:\\Users\\Papi\\Desktop\\'+sensor+seed_to_compare+'15.svg', dpi=300)
 #fig1.savefig('C:\\Users\\Papi\\Desktop\\'+sensor+'_HQ.tiff', dpi=600)
