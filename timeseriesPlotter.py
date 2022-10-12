@@ -4,6 +4,7 @@ import os
 import pandas as pd
 import pyFAST
 import math
+import numpy as np
 from pyFAST.input_output import FASTOutputFile
 
 #------------------------------------------------------------------------------
@@ -13,12 +14,11 @@ from pyFAST.input_output import FASTOutputFile
 #                   contains "seed_to_compare" in the file name. Make sure
 #                   that a results file is being loaded
 #
-#   usage:          #OFPath2 = path to folder containing second file
-                    #OFPath = path to containing first file
+#   usage:          #path = list of paths to file folders
                     #sensor = sensor to plot
                     #sensorlabel = label to display on plot
                     #xrng,yrng = x and y ranges
-                    #seed_to_compare = keyword to select file to compare
+                    #seed_to_compare = list of keywords to select files to compare
                     #binary = select if data is in binary format (if it is set path to read_FAST_binary correctly)
 #
 #   author:         Francesco Papi
@@ -30,67 +30,107 @@ from pyFAST.input_output import FASTOutputFile
 
 #---------- USER PARAMETERS ---------------------------------------------------
 
-# OFPath=r'D:\Wind\FLOATING\DLC1X\IEA15MW_DLC11\Results'
-# OFPath2=r'D:\Wind\FLOATING\DLC1X\IEA15MW_DLC11\Results\onshore'
-OFPath=r'G:\Drive condivisi\MsC Menchetti\OpenFAST\OpenFAST_Setup\EPS_6.6882_GF_0.5'
-OFPath2=r'G:\Drive condivisi\MsC Menchetti\OpenFAST\OpenFAST_Setup\EPS_6.6882_GF_0.5'
 
-sensor='GenPwr_[kW]'
-# sensor = 'Wind1VelY_[m/s]'
-# sensor = 'RootMxb1_[kN-m]'
-# sensor = 'TipDxc1_[m]'
-# sensor = 'RotSpeed_[rpm]'
-# sensor = 'NacYaw_[deg]'
-# sensor = 'PtfmSurge_[m]'
-# sensor = 'PtfmPitch_[deg]'
-# sensor = 'PtfmYaw_[deg]'
-# sensor = 'TTDspSS_[m]'
-# sensor = 'YawBrMyp_[kN-m]'
-# sensor = 'YawBrFxp_[kN]'
-# sensor = 'TwrBsMyt_[kN-m]'
-# sensor = 'TwrBsFxt_[kN]'
-# sensor = 'TipDxc1_[m]'
-# sensor = 'Wind1AngXY_[NVALI]'
-# sensor = 'PtfmRoll_[deg]'
-# sensor = 'NcIMUTAxs_[m/s^2]'
-# sensor = 'YawBrTDxt_[m]'
-# sensor = 'BldPitch1_[deg]'
-# sensor = 'B1N8Cd_[-]'
-# sensor = 'RtTSR_[-]'
-# sensor = 'GenTq_[kN-m]'
+paths = [
+            r'D:\Wind\FLOATING\FLOATECH\OC4\DLC62\Results',
+            r'D:\Wind\FLOATING\FLOATECH\OC4\DLC12\Results',
+            r'D:\Wind\FLOATING\FLOATECH\OC4\DLC61\Results',
+            r'D:\Wind\FLOATING\FLOATECH\OC4\DLC16\Results',
+            ]
 
-sensorlabel = sensor
-#sensorlabel='$ T_X^{BT} $ (m)'  #'wind speed @ hub (m/s)' #'$ T_X^{BT} $ (m)'
-# xrng=[500,550]
-# yrng=[0,15]
+seed_to_compare = [
+                    'OF_5MWOC4_LC62_s10003_ws36_hs16_tp18_mis30_i0_y90', 
+                    'OF_5MWOC4_LC12_s200_ws17_hs3_tp12_mis-30_i0_y10', 
+                    'OF_5MWOC4_LC61_s10000_ws36_hs16_tp18_mis30_i0_y10', 
+                    'OF_5MWOC4_LC16_s1067_ws19_hs10_tp16_mis0_i0_y0', 
+                   ]
+
+labels = [
+           'LC 62', 
+           'LC 12', 
+           'LC 61', 
+           'LC 16', 
+          ]
+
 
 binary = True
+# saveFig = False
 
-seed_to_compare = 'ws5_ti0_flex.out'
+colors = ['r', 'b', 'black', 'green']
+linestyle = ['-','-', '-', '-']
+
+# %%4
+# labels = ['old', 'new', 'other']
+# colors = ['black', 'red', 'green', 'brown', 'green']
+
+# binary = True
+
+# paths = [
+#     r'G:\Il mio Drive\WIP\Task30\01_Model_Data\AD\LLFVW_OLAF\LCs\OLD\SteadyAero\LC 2.27_steady',
+#     r'G:\Il mio Drive\WIP\Task30\01_Model_Data\AD\LLFVW_OLAF\LCs\SteadyAero\LC 2.27_steady',
+#     # r'G:\Il mio Drive\WIP\Task30\01_Model_Data\AD\BEM_steady\IEA_Task30_III_AeroDyn_LC2X',
+#     r'G:\Il mio Drive\WIP\Task30\01_Model_Data\AD\DBEM_OfficialTaskResults\results_LC2X'
+#     ]
+
+sensor = 'RtAeroFxh_[N]'
+# sensor = 'RtAeroMxh_[N-m]'
+# sensor = 'RotSpeed_[rpm]'
+# sensor = 'BldPitch1_[deg]'
+# sensor = 'TipDyc1_[m]'
+# sensor = 'GenPwr'
+# sensor = 'DBEMTau1_[s]'
+# sensor = 'YawBrTAxp_[m/s^2]'
+# sensor = 'Wind1VelX_[m/s]'
+# sensor = 'Wave1Elev_[m]'
+# sensor = 'TipDxc1_[m]'
+
+# sensor = 'B1N3Cl_[-]'
+# sensor = 'BldPitch1_[deg]'
+# sensor = 'PtfmSurge_[m]'
+# sensor = 'PtfmRoll_[deg]'
+# sensor = 'GenPwr_[kW]'
+# sensor = 'BldPitch1_[deg]'
+# sensor = 'GenTq_[kN-m]'
+
+
+# time = 'B1N3Alpha_[deg]'
+time = 'Time_[s]'
+# # time = 'Azimuth_[deg]'
+# time = 'RotSpeed_[rpm]'
+
+# seed_to_compare = ['LC227', 'LC227', 'LC227']
+
+sensorlabel = sensor
+# # sensorlabel='$ T_X^{BT} $ (m)'  #'wind speed @ hub (m/s)' #'$ T_X^{BT} $ (m)'
+
+# # xrng=[500,550]
+# # yrng=[0,15]
 
 #------------------------------------------------------------------------------
 
+OFfiles = [] 
+for ii,path in enumerate(paths): 
+    
+    for file in os.listdir(path):
+        if seed_to_compare[ii] in file and '.out' in file:
+            OFfiles.append('\\'.join([path, file]))
+            print('processing ', file)
 
-for file in os.listdir(OFPath2):
-    if seed_to_compare in file and '.out' in file:
-        OFfile2='\\'.join([OFPath2, file])
+
+data = {}
+for OFfile in OFfiles:
+    
+    if binary:
+        data[OFfile] = FASTOutputFile(OFfile).toDataFrame()
+
+    else:
+        data[OFfile] = pd.read_table(OFfile, skiprows=6, skipinitialspace=True)
+        data[OFfile].columns = data[OFfile].columns.str.replace(' ', '')
+        data[OFfile]=data[OFfile].drop(labels=0)
+        data[OFfile]=data[OFfile].astype(float)
         
-for file in os.listdir(OFPath):
-    if seed_to_compare in file and '.out' in file:
-        OFfile='\\'.join([OFPath, file])
+        
 
-if binary:
-    Channels_OF2 = FASTOutputFile(OFfile2).toDataFrame()
-    Channels_OF = FASTOutputFile(OFfile).toDataFrame()
-else:
-    Channels_OF2 = pd.read_table(OFfile2, skiprows=6, skipinitialspace=True)
-    Channels_OF = pd.read_table(OFfile, skiprows=6, skipinitialspace=True)
-    Channels_OF.columns = Channels_OF.columns.str.replace(' ', '')
-    Channels_OF2.columns = Channels_OF2.columns.str.replace(' ', '')
-    Channels_OF=Channels_OF.drop(labels=0)
-    Channels_OF2=Channels_OF2.drop(labels=0)
-    Channels_OF=Channels_OF.astype(float)
-    Channels_OF2=Channels_OF2.astype(float)
 
 fig1, ax1 = plt.subplots()
 
@@ -99,16 +139,42 @@ ax1.set_ylabel(sensorlabel)
 
 ax1.grid()
 
-ax1.plot(Channels_OF2['Time_[s]'], Channels_OF2[sensor], label = "OF2", linewidth=2, color='b')
-ax1.plot(Channels_OF['Time_[s]'], Channels_OF[sensor], label = "OF1", linewidth=2, color='r')
-# ax1.set_xlim(xrng)
-# ax1.set_ylim(yrng)
-# ax1.set_xticks([500,510,520,530,540,550])
+for i,OFfile in enumerate(OFfiles): 
+    
+    ax1.plot(data[OFfile][time], data[OFfile][sensor], label = labels[i], linewidth=2, color=colors[i], linestyle = linestyle[i])
+    # ax1.plot(data[OFfile][time], data[OFfile][sensor].iloc[:,1], label = labels[i], linewidth=2, color=colors[i], linestyle = linestyle[i])
+
+
+# ax1.legend(framealpha=1)
+plt.tight_layout()
+
+
+
+# ax1.plot(data[OFfile][time], data[OFfile]['Wind1VelY_[m/s]'], label = 'Wind Velocity Y', linewidth=2, color='b', linestyle = linestyle[i])
 
 
 ax1.legend(framealpha=1)
 plt.tight_layout()
 
-#uncomment to save figure
-#fig1.savefig('C:\\Users\\Papi\\Desktop\\'+sensor+'.jpg', dpi=300)
+# ax1.set_ylim(-55200000000,-551500000000)
+
+# if saveFig:
+    # fig1.savefig('C:\\Users\\Papi\\Desktop\\'+sensor+'.jpg', dpi=300)
 #fig1.savefig('C:\\Users\\Papi\\Desktop\\'+sensor+'_HQ.tiff', dpi=600)
+#%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+#PLOT FFT OF SIGNAL
+
+# from scipy.fft import fft, fftfreq 
+# import numpy as np
+
+# N = (1/(Channels_OF2['Time_[s]'].iloc[1]+Channels_OF2['Time_[s]'].iloc[0])) * (Channels_OF2['Time_[s]'].iloc[-1]-Channels_OF2['Time_[s]'].iloc[0])
+# N=int(N)+1
+# signal = np.array(Channels_OF[sensor])
+# yf = fft(signal)
+# xf = fftfreq(N, (Channels_OF2['Time_[s]'].iloc[1]+Channels_OF2['Time_[s]'].iloc[0]))
+
+# fig, ax = plt.subplots()
+# ax.plot(xf,2/N*np.abs(yf), color='b')
+
+# data[OFfile][time].to_csv('time.txt')
+# data[OFfile][sensor].to_csv('sensor.txt')
