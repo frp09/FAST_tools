@@ -1,3 +1,10 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Tue Feb 14 11:40:06 2023
+
+@author: Francesco Papi
+"""
+
 import os
 import pandas as pd
 import glob
@@ -31,106 +38,19 @@ from FASTAverageCalculator import *
 
 
 windspeeds=[4,6,8,10,12,14,16,18,20,22,24]
-# windspeeds = [38]
-# windspeeds = [47.5]
-# windspeeds = [9,11,13]
 
-sourcepaths = [#r'D:\Wind\FLOATING\DLC1.X\IEA15MW_DLC11\Results',
-                # r'D:\Wind\FLOATING\DLC1.X\NREL5MW_DLC11\Results',
-                # r'D:\Wind\FLOATING\DLC1.X\IEA15MW_DLC11\Results\onshore',
-                # r'D:\Wind\FLOATING\DLC1.X\NREL5MW_DLC11\Results\onshore']#,
-                # r'D:\Wind\FLOATING\DLC1.X\IEA15MW_DLC13\Results']#,
+sourcepaths = [
                 r'D:\Wind\FLOATING\DLC1.X\NREL5MW_DLC13\Results',
-                # r'D:\Wind\FLOATING\DLC1.X\IEA15MW_DLC13\Results\onshore',
-                r'D:\Wind\FLOATING\DLC1.X\NREL5MW_DLC13_onshore\Results']
+                r'D:\Wind\FLOATING\DLC1.X\NREL5MW_DLC13_onshore\Results'
+                ]
 
-# sourcepaths = [r'D:\Wind\FLOATING\DLC1.X\IEA15MW_DLC16\Results',
-                # r'D:\Wind\FLOATING\DLC1.X\NREL5MW_DLC16\Results']
-                # r'D:\Wind\FLOATING\DLC1.X\IEA15MW_DLC16_onshore\Results']#,
-                # r'D:\Wind\FLOATING\DLC1.X\NREL5MW_DLC16_onshore\Results']
 
-# sourcepaths = [#r'D:\Wind\FLOATING\DLC1.X\IEA15MW_DLC14\Results',
-                # r'D:\Wind\FLOATING\DLC1.X\NREL5MW_DLC14\Results',
-#                 r'D:\Wind\FLOATING\DLC1.X\IEA15MW_DLC14\Results\onshore',
-                # r'D:\Wind\FLOATING\DLC1.X\NREL5MW_DLC14\Results\onshore',]
-
-# sourcepaths = [r'D:\Wind\FLOATING\DLC6.X\NREL5MW_DLC61\Results',
-#                 r'D:\Wind\FLOATING\DLC6.X\IEA15MW_DLC61\Results',
-#                 r'D:\Wind\FLOATING\DLC6.X\NREL5MW_DLC61\Results\onshore',
-#                 r'D:\Wind\FLOATING\DLC6.X\IEA15MW_DLC61\Results\onshore']
-
-# sourcepaths = [r'D:\Wind\FLOATING\DLC6.X\NREL5MW_DLC63\Results',
-#                 r'D:\Wind\FLOATING\DLC6.X\IEA15MW_DLC63_rigid\Results',
-#                 r'D:\Wind\FLOATING\DLC6.X\NREL5MW_DLC63\Results\onshore',
-#                 r'D:\Wind\FLOATING\DLC6.X\IEA15MW_DLC63_rigid\Results\onshore']
-
-resultsPaths = [#r'D:\Wind\FLOATING\DLC1.X\IEA15MW_DLC11\Results\Means&Stds',
-                # r'D:\Wind\FLOATING\DLC1.X\NREL5MW_DLC11\Results\Means&Stds',
-                # r'D:\Wind\FLOATING\DLC1.X\IEA15MW_DLC11\Results\onshore\Means&Stds',
-                # r'D:\Wind\FLOATING\DLC1.X\NREL5MW_DLC11\Results\onshore\Means&Stds']#,
-                # r'D:\Wind\FLOATING\DLC1.X\IEA15MW_DLC13\Results\Means&Stds']#,
+resultsPaths = [
                 r'D:\Wind\FLOATING\DLC1.X\NREL5MW_DLC13\Results\Means&Stds',
-                # r'D:\Wind\FLOATING\DLC1.X\IEA15MW_DLC13\Results\onshore\Means&Stds',
-                r'D:\Wind\FLOATING\DLC1.X\NREL5MW_DLC13_onshore\Results\Means&Stds']
-
-# resultsPaths = [r'D:\Wind\FLOATING\DLC1.X\IEA15MW_DLC16\Results\Means&Stds',
-                # r'D:\Wind\FLOATING\DLC1.X\NREL5MW_DLC16\Results\Means&Stds']
-                # r'D:\Wind\FLOATING\DLC1.X\IEA15MW_DLC16_onshore\Results\Means&Stds']#,
-                # r'D:\Wind\FLOATING\DLC1.X\NREL5MW_DLC16_onshore\Results\Means&Stds']
-
-# resultsPaths = [#r'D:\Wind\FLOATING\DLC1.X\IEA15MW_DLC14\Results\Means&Stds',
-                # r'D:\Wind\FLOATING\DLC1.X\NREL5MW_DLC14\Results\Means&Stds',
-                # r'D:\Wind\FLOATING\DLC1.X\IEA15MW_DLC14\Results\onshore\Means&Stds',
-                # r'D:\Wind\FLOATING\DLC1.X\NREL5MW_DLC14\Results\onshore\Means&Stds']
-
-# resultsPaths = [r'D:\Wind\FLOATING\DLC6.X\NREL5MW_DLC61\Results\Means&Stds',
-#                 r'D:\Wind\FLOATING\DLC6.X\IEA15MW_DLC61\Results\Means&Stds',
-#                 r'D:\Wind\FLOATING\DLC6.X\NREL5MW_DLC61\Results\onshore\Means&Stds',
-#                 r'D:\Wind\FLOATING\DLC6.X\IEA15MW_DLC61\Results\onshore\Means&Stds']
-
-# resultsPaths = [r'D:\Wind\FLOATING\DLC6.X\NREL5MW_DLC63\Results\Means&Stds',
-#                 r'D:\Wind\FLOATING\DLC6.X\IEA15MW_DLC63_rigid\Results\Means&Stds',
-#                 r'D:\Wind\FLOATING\DLC6.X\NREL5MW_DLC63\Results\onshore\Means&Stds',
-#                 r'D:\Wind\FLOATING\DLC6.X\IEA15MW_DLC63_rigid\Results\onshore\Means&Stds']
-
-# sourcepaths = ['D:\Wind\FLOATING\DLC1.X\IEA15MW_DLC11_onshore\Results',
-#                # 'D:\Wind\FLOATING\DLC1.X\IEA15MW_DLC13_onshore\Results',
-#                'D:\Wind\FLOATING\DLC1.X\IEA15MW_DLC16_onshore\Results',
-#                'D:\Wind\FLOATING\DLC1.X\IEA15MW_DLC11\Results',
-#                'D:\Wind\FLOATING\DLC1.X\IEA15MW_DLC13\Results',
-#                'D:\Wind\FLOATING\DLC1.X\IEA15MW_DLC16\Results']
-
-# resultsPaths = ['D:\Wind\FLOATING\DLC1.X\IEA15MW_DLC11_onshore\Results\Means&Stds',
-#                # 'D:\Wind\FLOATING\DLC1.X\IEA15MW_DLC13_onshore\Results\Means&Stds',
-#                'D:\Wind\FLOATING\DLC1.X\IEA15MW_DLC16_onshore\Results\Means&Stds',
-#                'D:\Wind\FLOATING\DLC1.X\IEA15MW_DLC11\Results\Means&Stds',
-#                'D:\Wind\FLOATING\DLC1.X\IEA15MW_DLC13\Results\Means&Stds',
-#                'D:\Wind\FLOATING\DLC1.X\IEA15MW_DLC16\Results\Means&Stds']
+                r'D:\Wind\FLOATING\DLC1.X\NREL5MW_DLC13_onshore\Results\Means&Stds'
+                ]
 
 
-# sourcepaths = [r'D:\Wind\FLOATING\DLC6.X\IEA15MW_DLC63_idle_rigid\Results',
-                # r'D:\Wind\FLOATING\DLC6.X\IEA15MW_DLC63_idle_rigid\Results\onshore']
-
-# resultsPaths = [r'D:\Wind\FLOATING\DLC6.X\IEA15MW_DLC63_idle_rigid\Results\Means&Stds',
-                # r'D:\Wind\FLOATING\DLC6.X\IEA15MW_DLC63_idle_rigid\Results\onshore\Means&Stds']
-
-# sourcepaths = [r'D:\Wind\FLOATING\DLC6.X\IEA15MW_DLC61_idle\Results',
-#                 r'D:\Wind\FLOATING\DLC6.X\IEA15MW_DLC61_idle\Results\onshore']
-
-# resultsPaths = [r'D:\Wind\FLOATING\DLC6.X\IEA15MW_DLC61_idle\Results\Means&Stds',
-#                 r'D:\Wind\FLOATING\DLC6.X\IEA15MW_DLC61_idle\Results\onshore\Means&Stds']
-
-# sourcepaths = [r'D:\Wind\FLOATING\DLC6.X\NREL5MW_DLC63_idle_rigid\Results',
-                # r'D:\Wind\FLOATING\DLC6.X\NREL5MW_DLC63_idle_rigid\Results\onshore']
-
-# resultsPaths = [r'D:\Wind\FLOATING\DLC6.X\NREL5MW_DLC63_idle_rigid\Results\Means&Stds',
-                # r'D:\Wind\FLOATING\DLC6.X\NREL5MW_DLC63_idle_rigid\Results\onshore\Means&Stds']
-
-# sourcepaths = [r'D:\Wind\FLOATING\DLC6.X\NREL5MW_DLC61_idle_rigid\Results',
-#                 r'D:\Wind\FLOATING\DLC6.X\NREL5MW_DLC61_idle_rigid\Results\onshore']
-
-# resultsPaths = [r'D:\Wind\FLOATING\DLC6.X\NREL5MW_DLC61_idle_rigid\Results\Means&Stds',
-#                 r'D:\Wind\FLOATING\DLC6.X\NREL5MW_DLC61_idle_rigid\Results\onshore\Means&Stds']
 #------------------------------------------------------------------------------
 #------------------------------------------------------------------------------
     
@@ -178,3 +98,17 @@ for k,sourcepath in enumerate(sourcepaths):
     averageWriter(ref_maxs[readPath], ref_units[readPath], writePath, 'Maximums.txt') 
     averageWriter(ref_mins[readPath], ref_units[readPath], writePath, 'Minimums.txt')
     averageWriter(ref_abs_max[readPath], ref_units[readPath], writePath, 'Absolute_Maximums.txt')
+Footer
+© 2023 GitHub, Inc.
+Footer navigation
+Terms
+Privacy
+Security
+Status
+Docs
+Contact GitHub
+Pricing
+API
+Training
+Blog
+About
