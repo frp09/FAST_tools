@@ -98,17 +98,3 @@ for k,sourcepath in enumerate(sourcepaths):
     averageWriter(ref_maxs[readPath], ref_units[readPath], writePath, 'Maximums.txt') 
     averageWriter(ref_mins[readPath], ref_units[readPath], writePath, 'Minimums.txt')
     averageWriter(ref_abs_max[readPath], ref_units[readPath], writePath, 'Absolute_Maximums.txt')
-Footer
-© 2023 GitHub, Inc.
-Footer navigation
-Terms
-Privacy
-Security
-Status
-Docs
-Contact GitHub
-Pricing
-API
-Training
-Blog
-About
