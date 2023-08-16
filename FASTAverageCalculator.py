@@ -72,13 +72,13 @@ def averageWriter(dataframe, units, path, name):
         os.mkdir(path)
         
     resultfile='\\'.join([path, name])
-    result=open(resultfile, 'w')
+    # result=open(resultfile, 'w')
 
-    unitsString = "\t".join(units)
-    result.write(unitsString)
-    result.write('\n')
-    dataframe.to_csv(result, sep='\t')
-    result.close()
+    # unitsString = "\t".join(units)
+    # result.write(unitsString)
+    # result.write('\n')
+    dataframe.to_csv(resultfile, sep='\t')
+    # result.close()
     
 def averageReader(path, seed):
    
