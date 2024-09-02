@@ -2,10 +2,10 @@ import matplotlib.pyplot as plt
 import sys
 import os
 import pandas as pd
-import pyFAST
+import openfast_toolbox
 import math
 import numpy as np
-from pyFAST.input_output import FASTOutputFile
+from openfast_toolbox.io import FASTOutputFile
 
 #------------------------------------------------------------------------------
 #   TIMESERIES PLOTTER
