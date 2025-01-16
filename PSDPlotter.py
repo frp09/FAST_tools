@@ -33,7 +33,7 @@ from CalculatePSD import calcPSD
 #
 #   date:           10/2022
 #
-#   warnings:       "openFtast toolbox" IS REQUIRED:
+#   warnings:       "openFast toolbox" IS REQUIRED:
                     https://github.com/OpenFAST/openfast_toolbox
 #------------------------------------------------------------------------------
 '''

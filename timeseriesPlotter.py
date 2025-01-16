@@ -27,7 +27,7 @@ from openfast_toolbox.io import FASTOutputFile
 #
 #   date:           09/2020
 #
-#   warnings:       "openFtast toolbox" IS REQUIRED:
+#   warnings:       "openFast toolbox" IS REQUIRED:
                     https://github.com/OpenFAST/openfast_toolbox
 #------------------------------------------------------------------------------
 '''

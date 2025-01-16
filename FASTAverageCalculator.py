@@ -5,6 +5,7 @@ import os
 import openfast_toolbox
 from openfast_toolbox.io import FASTOutputFile
 
+'''
 #------------------------------------------------------------------------------
 #   FAST OUTPUT FUCTIONS
 #
@@ -17,8 +18,11 @@ from openfast_toolbox.io import FASTOutputFile
 #
 #   date:           Jul 2021
 #
-#   warnings:       --
+#   warnings:       "openFast toolbox" IS REQUIRED:
+                    https://github.com/OpenFAST/openfast_toolbox
 #------------------------------------------------------------------------------
+'''
+
 
 def averageCalculator(folderPath, windspeeds, sensors):
     
