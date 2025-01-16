@@ -1,8 +1,9 @@
 import pandas as pd
 import glob
-import pyFAST
 import os
-from pyFAST.input_output import FASTOutputFile
+
+import openfast_toolbox
+from openfast_toolbox.io import FASTOutputFile
 
 #------------------------------------------------------------------------------
 #   FAST OUTPUT FUCTIONS

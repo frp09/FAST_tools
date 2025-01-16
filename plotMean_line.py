@@ -5,6 +5,7 @@ import matplotlib.pyplot as plt
 #sys.path.append('C:\\Users\\Papi\\Desktop')
 from FASTAverageCalculator import *
 
+'''
 #------------------------------------------------------------------------------
 #   FAST OUTPUT BAR PLOTTER (MEAN)
 #
@@ -18,10 +19,12 @@ from FASTAverageCalculator import *
 #   date:           Jul 2021
 #
 #   warnings:       Make sure len(sourcepaths)=len(refPaths)
+                    "openFtast toolbox" IS REQUIRED:
+                    https://github.com/OpenFAST/openfast_toolbox
 #------------------------------------------------------------------------------
+'''
 
-#------------------------------------------------------------------------------
-#-------------------------- USER VALUES ---------------------------------------
+#%%------------------------ USER VALUES ---------------------------------------
 
 # sensor = 'RotThrust_[kN]'
 # sensor = 'RtAeroFxh_[N]'

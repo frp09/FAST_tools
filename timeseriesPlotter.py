@@ -2,11 +2,13 @@ import matplotlib.pyplot as plt
 import sys
 import os
 import pandas as pd
-import openfast_toolbox
 import math
 import numpy as np
+
+import openfast_toolbox
 from openfast_toolbox.io import FASTOutputFile
 
+'''
 #------------------------------------------------------------------------------
 #   TIMESERIES PLOTTER
 #
@@ -14,7 +16,7 @@ from openfast_toolbox.io import FASTOutputFile
 #                   contains "seed_to_compare" in the file name. Make sure
 #                   that a results file is being loaded
 #
-#   usage:          #path = list of paths to file folders
+#   usage:          #path = LIST of paths to file folders
                     #sensor = sensor to plot
                     #sensorlabel = label to display on plot
                     #xrng,yrng = x and y ranges
@@ -25,31 +27,27 @@ from openfast_toolbox.io import FASTOutputFile
 #
 #   date:           09/2020
 #
-#   warnings:       **********************************************************
+#   warnings:       "openFtast toolbox" IS REQUIRED:
+                    https://github.com/OpenFAST/openfast_toolbox
 #------------------------------------------------------------------------------
+'''
 
-#---------- USER PARAMETERS ---------------------------------------------------
+#%%-------- USER PARAMETERS ---------------------------------------------------
 
 
 paths = [
-            r'D:\Wind\FLOATING\FLOATECH\OC4\DLC62\Results',
-            r'D:\Wind\FLOATING\FLOATECH\OC4\DLC12\Results',
-            r'D:\Wind\FLOATING\FLOATECH\OC4\DLC61\Results',
-            r'D:\Wind\FLOATING\FLOATECH\OC4\DLC16\Results',
+            r'path to folder containing result to plot',
+
             ]
 
 seed_to_compare = [
-                    'OF_5MWOC4_LC62_s10003_ws36_hs16_tp18_mis30_i0_y90', 
-                    'OF_5MWOC4_LC12_s200_ws17_hs3_tp12_mis-30_i0_y10', 
-                    'OF_5MWOC4_LC61_s10000_ws36_hs16_tp18_mis30_i0_y10', 
-                    'OF_5MWOC4_LC16_s1067_ws19_hs10_tp16_mis0_i0_y0', 
+                    'pattern in name or name of file to plot', 
+
                    ]
 
 labels = [
-           'LC 62', 
-           'LC 12', 
-           'LC 61', 
-           'LC 16', 
+           'label of files for graph', 
+
           ]
 
 
@@ -59,18 +57,6 @@ binary = True
 colors = ['r', 'b', 'black', 'green']
 linestyle = ['-','-', '-', '-']
 
-# %%4
-# labels = ['old', 'new', 'other']
-# colors = ['black', 'red', 'green', 'brown', 'green']
-
-# binary = True
-
-# paths = [
-#     r'G:\Il mio Drive\WIP\Task30\01_Model_Data\AD\LLFVW_OLAF\LCs\OLD\SteadyAero\LC 2.27_steady',
-#     r'G:\Il mio Drive\WIP\Task30\01_Model_Data\AD\LLFVW_OLAF\LCs\SteadyAero\LC 2.27_steady',
-#     # r'G:\Il mio Drive\WIP\Task30\01_Model_Data\AD\BEM_steady\IEA_Task30_III_AeroDyn_LC2X',
-#     r'G:\Il mio Drive\WIP\Task30\01_Model_Data\AD\DBEM_OfficialTaskResults\results_LC2X'
-#     ]
 
 sensor = 'RtAeroFxh_[N]'
 # sensor = 'RtAeroMxh_[N-m]'
@@ -78,27 +64,12 @@ sensor = 'RtAeroFxh_[N]'
 # sensor = 'BldPitch1_[deg]'
 # sensor = 'TipDyc1_[m]'
 # sensor = 'GenPwr'
-# sensor = 'DBEMTau1_[s]'
-# sensor = 'YawBrTAxp_[m/s^2]'
-# sensor = 'Wind1VelX_[m/s]'
-# sensor = 'Wave1Elev_[m]'
-# sensor = 'TipDxc1_[m]'
-
-# sensor = 'B1N3Cl_[-]'
-# sensor = 'BldPitch1_[deg]'
-# sensor = 'PtfmSurge_[m]'
-# sensor = 'PtfmRoll_[deg]'
-# sensor = 'GenPwr_[kW]'
-# sensor = 'BldPitch1_[deg]'
-# sensor = 'GenTq_[kN-m]'
 
 
-# time = 'B1N3Alpha_[deg]'
 time = 'Time_[s]'
 # # time = 'Azimuth_[deg]'
 # time = 'RotSpeed_[rpm]'
 
-# seed_to_compare = ['LC227', 'LC227', 'LC227']
 
 sensorlabel = sensor
 # # sensorlabel='$ T_X^{BT} $ (m)'  #'wind speed @ hub (m/s)' #'$ T_X^{BT} $ (m)'

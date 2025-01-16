@@ -2,9 +2,11 @@ import matplotlib.pyplot as plt
 import sys
 import os
 import pandas as pd
-import pyFAST
-from pyFAST.input_output import FASTOutputFile
 
+import openfast_toolbox
+from openfast_toolbox.io import FASTOutputFile
+
+'''
 #------------------------------------------------------------------------------
 #   TIMESERIES PLOTTER
 #
@@ -14,9 +16,9 @@ from pyFAST.input_output import FASTOutputFile
 #
 #   usage:          #OFPath2 = path to folder containing second file
                     #OFPath = path to containing first file
+                    #seed_to_compare = keyword to select file to compare
                     #sensors = sensors along span to plot
                     #sensorlabel = label to display on plot
-                    #seed_to_compare = keyword to select file to compare
                     #binary = select if data is in binary format (if it is set path to read_FAST_binary correctly)
                     #span = span location of the nodes
 #
@@ -24,13 +26,17 @@ from pyFAST.input_output import FASTOutputFile
 #
 #   date:           09/2020
 #
-#   warnings:       **********************************************************
+#   warnings:       "openFtast toolbox" IS REQUIRED:
+                    https://github.com/OpenFAST/openfast_toolbox
 #------------------------------------------------------------------------------
+'''
 
 #---------- USER PARAMETERS ---------------------------------------------------
 
-OFPath2=r'D:\Wind\IEA_Task30\IEA_Task30_III_AeroDyn\Dyn_calibration\dynamic'
-OFPath=r'D:\Wind\IEA_Task30\IEA_Task30_III_AeroDyn\Dyn_calibration\static'
+OFPath2=r'path to folder cointaining first file to compare'
+OFPath=r'path to folder cointaining second file to compare'
+
+seed_to_compare = 'pattern in name of files to compare'
 
 #sensors=['B1N1AxInd_[-]', 'B1N2AxInd_[-]', 'B1N3AxInd_[-]', 'B1N4AxInd_[-]', 'B1N5AxInd_[-]', 'B1N6AxInd_[-]', 'B1N7AxInd_[-]', 'B1N8AxInd_[-]', 'B1N9AxInd_[-]']
 #sensors=['B1N1Alpha_[deg]', 'B1N2Alpha_[deg]', 'B1N3Alpha_[deg]', 'B1N4Alpha_[deg]', 'B1N5Alpha_[deg]', 'B1N6Alpha_[deg]', 'B1N7Alpha_[deg]', 'B1N8Alpha_[deg]', 'B1N9Alpha_[deg]']
@@ -46,7 +52,7 @@ sensorlabel='$ T_X^{BT} $ (m)'  #'wind speed @ hub (m/s)' #'$ T_X^{BT} $ (m)'
 
 binary = True
 
-seed_to_compare = 'LC12'
+
 
 #------------------------------------------------------------------------------
 

@@ -42,7 +42,8 @@ import glob
 #
 #   date:           09/2020
 #
-#   warnings:       **********************************************************
+#   warnings:       "openFtast toolbox" IS REQUIRED:
+                    https://github.com/OpenFAST/openfast_toolbox
 #------------------------------------------------------------------------------
 
  '''

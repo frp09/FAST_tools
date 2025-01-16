@@ -2,14 +2,15 @@ import matplotlib.pyplot as plt
 import sys
 import os
 import pandas as pd
-import pyFAST
+import openfast_toolbox
 import math
-from pyFAST.input_output import FASTOutputFile
+from openfast_toolbox.io import FASTOutputFile
 
 cwd = os.getcwd()
 sys.path.append(cwd)
 from CalculatePSD import calcPSD
 
+'''
 #------------------------------------------------------------------------------
 #   PSD PLOTTER
 #
@@ -32,17 +33,20 @@ from CalculatePSD import calcPSD
 #
 #   date:           10/2022
 #
-#   warnings:       **********************************************************
+#   warnings:       "openFtast toolbox" IS REQUIRED:
+                    https://github.com/OpenFAST/openfast_toolbox
 #------------------------------------------------------------------------------
+'''
 
-#---------- USER PARAMETERS ---------------------------------------------------
 
-# %% USER INPUTS
+#%%-------- USER PARAMETERS ---------------------------------------------------
 
-binary = False                                                                 #read binary file (requires FAST toolbox by NREL)
-log = False                                                                   #semilog plot
+binary = True                                                                  #read binary file (requires FAST toolbox by NREL)
+log = False                                                                    #semilog plot
 lines_to_skip=2
 extend = 20
+
+
 labels = {
     '1': 'LC21', 
     '2': 'LC25',
@@ -50,15 +54,13 @@ labels = {
     }
 
 paths = {
-    '1': r'D:\SHARED_ICARO&POLARIS\ALM\FOR_PLOTS\LC21', 
-    '2': r'D:\SHARED_ICARO&POLARIS\ALM\FOR_PLOTS\LC25',
-    '3': r'D:\SHARED_ICARO&POLARIS\ALM\FOR_PLOTS\LC27'
+    '1': r'D:\RUN\NETTUNO\Modelli_FullScale\SOFTWIND_TI2_NOControl', 
+    '2': r'D:\RUN\NETTUNO\Modelli_FullScale\SOFTWIND_TI2_NOControl',
     }
 
 seed_to_compare = {
-    '1': 'rotor_aero_forces_0',
-    '2': 'rotor_aero_forces_0',
-    '3': 'rotor_aero_forces_0'
+    '1': 'OF_10MWSOFT_LC12_s140_ws11_hs5_tp12_mis30_i0_y0.outb',
+    '2': 'OF_10MWSOFT_LC16_s1030_ws11_hs9_tp16_mis0_i0_y0.outb',
     }
 
 colors = {
@@ -67,42 +69,12 @@ colors = {
     '3': 'g'
     }
 
-sensor = 'F_x'
-# sensor = 'GenPwr_[kW]'
-# sensor = 'Wind1VelY_[m/s]'
-# sensor = 'BldPitch1_[deg]'
-# sensor = 'RootMxb1'
-# sensor = 'YawBrTDxt_[m]'
+
+sensor = 'YawBrTDxt_[m]'
 # sensor = 'TipDxc2_[m]'
 # sensor = 'TwrBsMxt_[kN-m]'
 # sensor = 'TwrBsFxt_[kN]'
-# sensor = 'RtAeroMyh_[N-m]'
-# sensor = 'PtfmRDyi_[deg]'
-# sensor = 'TipDxc1_[m]'
-# sensor = 'YawPos_[deg]'
-# sensor = 'HSSBrTqC_[kN-m]'
-# sensor = 'RtAeroFxh_[N]'
-# sensor = 'RotThrust_[kN]'
-# sensor = 'RotPwr_[kW]'
-# sensor = 'Wave1Elev_[m]'
-# sensor = 'RotSpeed_[rpm]'
-# sensor = 'Azimuth_[deg]'
-# sensor = 'B1N3Alpha_[deg]'
-# sensor = 'YawBrTDyt_[m]'
-# sensor = 'TTDspFA_[m]'
-# sensor = 'YawBrFxp_[kN]'
-# sensor = 'RotSpeed_[rpm]'
-# sensor = 'NcIMUTAxs_[m/s^2]'
-# sensor = 'GenSpeed_[rpm]'
-# sensor = 'YawPos_[deg]'
-# sensor = 'PtfmTDzi_[m]'
-# sensor = 'L3N70T_[N]'
-# sensor = 'PtfmYaw_[deg]'
-# sensor = 'PtfmPitch_[deg]'
-# sensor = 'HorSpd'
-# sensor = 'RootMyc1_[kN-m]'
-# sensor = 'TipDxc1_[m]'
-# sensor = 'Wave1Elev_[m]'
+
 
 sensorlabel = sensor
 #sensorlabel='$ T_X^{BT} $ (m)'  #'wind speed @ hub (m/s)' #'$ T_X^{BT} $ (m)'

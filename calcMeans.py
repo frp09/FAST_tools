@@ -11,13 +11,14 @@ import glob
 import sys
 import matplotlib.pyplot as plt
 import numpy as np
-import pyFAST
-from pyFAST.input_output import FASTOutputFile
+import openfast_toolbox
+from openfast_toolbox.io import FASTOutputFile
 import math
 
-sys.path.append('C:\\Users\\Papi\\Desktop')
+#sys.path.append('C:\\Users\\Papi\\Desktop')
 from FASTAverageCalculator import *
 
+'''
 #------------------------------------------------------------------------------
 #   FAST OUTPUT MEAN CALCULATOR
 #
@@ -25,33 +26,36 @@ from FASTAverageCalculator import *
 #                   values for FAST outputs with same WS
 #
 #   usage:          the file quantities needed are defined in "user values"
+#                   sourcepaths: LIST of folders to calculate wind-speed mean values
+#                   resultspaths: LIST of folders to write computed statistics to
 #
 #   author:         Francesco Papi
 #
 #   date:           Jul 2021
 #
-#   warnings:       Make sure len(sourcepaths)=len(resultsPaths)
+#   warnings:       "openFtast toolbox" IS REQUIRED:
+                    https://github.com/OpenFAST/openfast_toolbox
 #------------------------------------------------------------------------------
-
-#------------------------------------------------------------------------------
-#-------------------------- USER VALUES ---------------------------------------    
+'''
 
 
-windspeeds=[4,6,8,10,12,14,16,18,20,22,24]
+
+#%%------------------------ USER VALUES ---------------------------------------    
+
+
+windspeeds=[11]
 
 sourcepaths = [
-                r'D:\Wind\FLOATING\DLC1.X\NREL5MW_DLC13\Results',
-                r'D:\Wind\FLOATING\DLC1.X\NREL5MW_DLC13_onshore\Results'
+                r'folder with results',
                 ]
 
 
 resultsPaths = [
-                r'D:\Wind\FLOATING\DLC1.X\NREL5MW_DLC13\Results\Means&Stds',
-                r'D:\Wind\FLOATING\DLC1.X\NREL5MW_DLC13_onshore\Results\Means&Stds'
+                r'output folder for data',
                 ]
 
 
-#------------------------------------------------------------------------------
+
 #------------------------------------------------------------------------------
     
 # dictionaries to store results
