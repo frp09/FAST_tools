@@ -33,7 +33,7 @@ from FASTAverageCalculator import *
 #
 #   date:           Jul 2021
 #
-#   warnings:       "openFtast toolbox" IS REQUIRED:
+#   warnings:       "openFast toolbox" IS REQUIRED:
                     https://github.com/OpenFAST/openfast_toolbox
 #------------------------------------------------------------------------------
 '''
