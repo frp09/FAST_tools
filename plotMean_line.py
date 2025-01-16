@@ -19,7 +19,7 @@ from FASTAverageCalculator import *
 #   date:           Jul 2021
 #
 #   warnings:       Make sure len(sourcepaths)=len(refPaths)
-                    "openFtast toolbox" IS REQUIRED:
+                    "openFast toolbox" IS REQUIRED:
                     https://github.com/OpenFAST/openfast_toolbox
 #------------------------------------------------------------------------------
 '''
